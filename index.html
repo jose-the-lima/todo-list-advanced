@@ -11,9 +11,9 @@
     <body>
 
         <header>
-            <button class="button-last-days">Últimos dias</button>
+            <button class="button-last-days bt">Últimos dias</button>
 
-            <button class="button-add">
+            <button class="button-add bt">
                 <img src="./assets/plus.svg"/>
             </button>
         </header>
@@ -21,15 +21,67 @@
         <main class="main-content">
             <section>
                 <h1>24/01/2023</h1>
-                <button>
+                <button class="bt">
                     Adicionar tarefa
                     <img src="./assets/plus.svg"/>
                 </button>
                 
             </section>
             
+            <section class="tasks">
+               <div class="task">
+                    <input type="checkbox"/>
+                    <p>Lavar os pratos</p>
+                    <button class="bt-trash">
+                        <img src="./assets/trash.png"/>
+                    </button>
+               </div> 
+
+               <div class="task">
+                    <input type="checkbox"/>
+                    <p>Lavar os pratos</p>
+                    <button class="bt-trash">
+                        <img src="./assets/trash.png"/>
+                    </button>
+               </div> 
+
+                <div class="task">
+                    <input type="checkbox"/>
+                    <p>Lavar os pratos</p>
+                    <button class="bt-trash">
+                        <img src="./assets/trash.png"/>
+                    </button>
+                </div>
+                
+                <div class="task">
+                    <input type="checkbox"/>
+                    <p>Lavar os pratos</p>
+                    <button class="bt-trash">
+                        <img src="./assets/trash.png"/>
+                    </button>
+                </div>
+            </section>
 
         </main>
+
+        <div class="central">
+            <section class="add-task-modal">
+                <label>
+                    Tarefa:<br>
+                    <input type="text"/>
+                </label>
+                
+                <div class="buttons">
+                    <button>Cancelar</button>
+                    <button>Adicionar</button>
+                </div>
+            </section>
+        </div>
+        
+
+        <section class="delete-task-modal">
+
+        </section>
 
         <script src="./script.js"></script>
     </body>
