@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+button {
+    padding: 10px;
+}
+
+.button-last-days {
+    font-size: 1.2rem;
+}
+
+.button-add {
+    border-radius: 50%;
+}
+.button-add img {
+    width: 30px;
+}
+
+
+
+.main-content section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 30px;
+}
+section button {
+    display:flex;
+    align-items: center;
+    gap: 20px;
+
+    border: 2px solid darkgreen;
+    border-radius: 8px;
+}
+section button img {
+    width: 20px;
+}
+
