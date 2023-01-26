@@ -21,7 +21,7 @@
         <main class="main-content">
             <section>
                 <h1>24/01/2023</h1>
-                <button class="bt">
+                <button class="bt button-add-task">
                     Adicionar tarefa
                     <img src="./assets/plus.svg"/>
                 </button>
@@ -29,31 +29,31 @@
             </section>
             
             <section class="tasks">
-               <div class="task">
-                    <input type="checkbox"/>
+               <!-- <div class="task">
+                    <input type="checkbox" class="check-task"/>
                     <p>Lavar os pratos</p>
                     <button class="bt-trash">
                         <img src="./assets/trash.png"/>
                     </button>
-               </div> 
+               </div>  -->
 
             </section>
 
         </main>
 
-        <div class="central">
-            <section class="add-task-modal">
+        <div class="central" id="none">
+            <section class="add-task-modal"  id="none">
                 <label>
                     Tarefa:<br>
-                    <input type="text"/>
+                    <input class="campo-add" type="text"/>
                 </label>
                 
                 <div class="buttons">
-                    <button>Cancelar</button>
-                    <button>Adicionar</button>
+                    <button class="add-cancel">Cancelar</button>
+                    <button class="add-task">Adicionar</button>
                 </div>
             </section>
-            <section class="delete-task-modal">
+            <section class="delete-task-modal"  id="none">
                 <div class="delete-text">
                     Deseja apagar a tarefa: ?
                 </div>

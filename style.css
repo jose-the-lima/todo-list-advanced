@@ -68,6 +68,23 @@ section button img {
     font-size: 1.5rem;
 }
 
+.check-task{
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 25px;
+    height: 25px;
+
+    border: 1px solid #444444;
+
+    transition: all .5s ease;
+}
+
+.check-task:checked{
+    background-color: #00ff33;
+    border-radius: 50%;
+}
+
 section .bt-trash {
     border: none;
     border-radius: 5px;
@@ -94,14 +111,15 @@ section .bt-trash:hover {
 .central {
     width: 100vw;
     height: 100vh;
+
     position: absolute;
     top:0;
+
+    background-color: #000000aa;
 
     display: flex;
     justify-content: center;
     align-items: center;
-
-    display: none;
 }
 
 .add-task-modal {
@@ -118,7 +136,6 @@ section .bt-trash:hover {
 
     border: 1px solid #000;
 
-    /* display: none; */
     font-size: 1.3rem;
 }
 
@@ -157,12 +174,15 @@ section .bt-trash:hover {
     display: flex;
     flex-direction:column;
     justify-content: space-between;
-
-    display: none;
 }
 
 .delete-text{
     font-size: 1.5rem;
+}
+
+
+#none {
+    display: none;
 }
 
 
