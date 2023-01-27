@@ -1,14 +1,19 @@
 const buttonAdd = document.querySelector(".button-add-task");
 const modalCentral = document.querySelector(".central");
 
+let tarefaASerApagada = "";
+
+
+
+const tasksArea = document.querySelector(".tasks");
 const tasks = [];
 
 const modalAdd = document.querySelector(".add-task-modal");
 
 
-const cancelAddButton = document.querySelector(".add-cancel");
+const cancelButton = document.querySelectorAll(".cancel");
 
-cancelAddButton.addEventListener("click", desativarModais);
+cancelButton.forEach(bt => bt.addEventListener("click", desativarModais));
 
 
 
@@ -28,6 +33,16 @@ addTaskButton.addEventListener("click", () => {
 
 const modalDel = document.querySelector(".delete-task-modal");
 
+const deleteTaskButton = document.querySelector(".delete-task");
+
+
+deleteTaskButton.addEventListener("click", () => {
+    tasks.splice(tasks.indexOf(tarefaASerApagada), 1);
+
+    renderizarListaDeTarefas();
+
+    desativarModais();
+})
 
 
 
@@ -59,6 +74,8 @@ function renderizarListaDeTarefas() {
 function desativarModais() {
     const modais = [modalCentral, modalAdd, modalDel];
     modais.forEach(mod => mod.setAttribute("id", "none"));
+
+    tarefaASerApagada = "";
 }
 
 function ativarModalAdd() {
@@ -68,10 +85,31 @@ function ativarModalAdd() {
     modais.forEach(mod => mod.removeAttribute("id"));
 }
 
-function ativarModalDel() {
+function ativarModalDel(task) {
     desativarModais();
     const modais = [modalCentral, modalDel];
+    let delMessageArea = document.querySelector(".delete-text");
+    delMessageArea.innerHTML = `Deseja apagar a tarefa: "${task}" ?`
+
+    tarefaASerApagada = task;
 
     modais.forEach(mod => mod.removeAttribute("id"));
 }
 
+tasksArea.addEventListener("click", (event) => {
+    const nameTag = event.target.tagName;
+    
+    if(nameTag === "INPUT") {
+        const pai = event.target.parentNode;
+        if(pai.hasAttribute("id")) {
+            pai.removeAttribute("id");
+        } else {
+            pai.setAttribute("id", "checked");
+        }
+    } else if(nameTag === "IMG") {
+
+        const contentOfTask = event.target.parentNode.previousElementSibling.innerHTML;
+
+        ativarModalDel(contentOfTask);
+    }
+});

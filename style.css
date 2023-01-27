@@ -80,6 +80,17 @@ section button img {
     transition: all .5s ease;
 }
 
+
+#checked {
+    text-decoration: line-through;
+}
+
+
+
+
+
+
+
 .check-task:checked{
     background-color: #00ff33;
     border-radius: 50%;
@@ -87,21 +98,27 @@ section button img {
 
 section .bt-trash {
     border: none;
+
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section .bt-trash img {
+    cursor: pointer;
+    background-color: lightcoral;
+
     border-radius: 5px;
 
-    background-color: lightcoral;
-    
-    padding: 2.5px;
-
-    cursor: pointer;
+    padding: 5px;
 
     transition: .5s all ease;
 }
 
-section .bt-trash:hover {
+section .bt-trash img:hover {
     background-color: #ff0000;
 }
-
 
 
 
