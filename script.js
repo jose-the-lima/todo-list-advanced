@@ -1,96 +1,49 @@
-const buttonAdd = document.querySelector(".button-add-task");
-const modalCentral = document.querySelector(".central");
-const tasks = [];
-const addDayButton = document.querySelector(".button-add");
-let dataAtual;
+let tarefaASerApagada = "";
 
+// Área responsável por criar o dia, e criar o objeto com os dados do dia.
+let dataAtual;
 let actualTaskDay;
 
-
+const addDayButton = document.querySelector(".button-add");
 
 addDayButton.addEventListener("click", () => {
     dataAtual = new Date().toLocaleDateString("pt-br");
-
-    let sectionTitleDate = document.querySelector(".main-content section h1");
-    buttonAdd.removeAttribute("id");
-
-    sectionTitleDate.innerHTML = dataAtual;
 
     actualTaskDay = {
         data: dataAtual,
         tasks: []
     };
+
+    const sectionTitleDate = document.querySelector(".main-content section h1");
+    sectionTitleDate.innerHTML = dataAtual;
+
+    buttonAdd.removeAttribute("id");
 });
 
 
-let tarefaASerApagada = "";
-
+// Eventos na área de tarefas
 const tasksArea = document.querySelector(".tasks");
 
-const modalAdd = document.querySelector(".add-task-modal");
-
-
-const cancelButton = document.querySelectorAll(".cancel");
-
-cancelButton.forEach(bt => bt.addEventListener("click", desativarModais));
-
-
-
-const addTaskButton = document.querySelector(".add-task");
-
-addTaskButton.addEventListener("click", () => {
-    const tasksModified = [];
-    let tasksOfMoment = document.querySelectorAll(".task");
-
-    tasksOfMoment.forEach((tas) => {
-        tasksModified.push([tas.children[1].innerHTML, tas.getAttribute("id") != null ? true:false]);
-    });
-
-    const task = document.querySelector(".campo-add");
-
-    actualTaskDay.tasks = [...tasksModified, [task.value, false]];
-
-    task.value = "";
+tasksArea.addEventListener("click", (event) => {
+    const nameTag = event.target.tagName;
     
-    desativarModais();
-    renderizarListaDeTarefas();
+    if(nameTag === "INPUT") {
+        const pai = event.target.parentNode;
+        if(pai.hasAttribute("id")) {
+            pai.removeAttribute("id");
+        } else {
+            pai.setAttribute("id", "checked");
+        }
+    } else if(nameTag === "IMG") {
+        const contentOfTask = event.target.parentNode.previousElementSibling.innerHTML;
+
+        ativarModalDel(contentOfTask);
+    }
 });
 
 
-const modalDel = document.querySelector(".delete-task-modal");
 
-const deleteTaskButton = document.querySelector(".delete-task");
-
-
-deleteTaskButton.addEventListener("click", () => {
-
-    const tasksCurrent = document.querySelectorAll(".task"); 
-
-    let tasksRemaining = [];
-
-    tasksCurrent.forEach((task) => {
-        const contentOfTask = task.children[1].innerHTML;
-        const taskCompleteStatus = task.getAttribute("id") != null ? true : false;
-
-        contentOfTask != tarefaASerApagada ? tasksRemaining.push([contentOfTask, taskCompleteStatus]):null;
-    });
-
-    actualTaskDay.tasks = tasksRemaining;
-
-    renderizarListaDeTarefas();
-
-    desativarModais();
-})
-
-
-
-
-
-
-buttonAdd.addEventListener("click", () => {
-    ativarModalAdd();
-})
-
+// Renderização da lista de tarefas, e template html do modelo da tarefa
 
 function renderizarListaDeTarefas() {
     const tasksArea = document.querySelector(".tasks");
@@ -112,6 +65,13 @@ function taskModel(task) {
     </div>`
 }
 
+
+// Modais:
+const modalCentral = document.querySelector(".central");
+const modalAdd = document.querySelector(".add-task-modal");
+const modalDel = document.querySelector(".delete-task-modal");
+
+// Funções relacionadas ao modal:
 
 function desativarModais() {
     const modais = [modalCentral, modalAdd, modalDel];
@@ -138,20 +98,62 @@ function ativarModalDel(task) {
     modais.forEach(mod => mod.removeAttribute("id"));
 }
 
-tasksArea.addEventListener("click", (event) => {
-    const nameTag = event.target.tagName;
+// Adição de tarefa a partir de eventos que liga o modal:
+
+const buttonAdd = document.querySelector(".button-add-task");
+
+buttonAdd.addEventListener("click", () => {
+    ativarModalAdd();
+})
+
+const addTaskButton = document.querySelector(".add-task");
+
+addTaskButton.addEventListener("click", () => {
+    const tasksModified = [];
+    let tasksOfMoment = document.querySelectorAll(".task");
+
+    tasksOfMoment.forEach((tas) => {
+        tasksModified.push([tas.children[1].innerHTML, tas.getAttribute("id") != null ? true:false]);
+    });
+
+    const task = document.querySelector(".campo-add");
+
+    actualTaskDay.tasks = [...tasksModified, [task.value, false]];
+
+    task.value = "";
     
-    if(nameTag === "INPUT") {
-        const pai = event.target.parentNode;
-        if(pai.hasAttribute("id")) {
-            pai.removeAttribute("id");
-        } else {
-            pai.setAttribute("id", "checked");
-        }
-    } else if(nameTag === "IMG") {
-
-        const contentOfTask = event.target.parentNode.previousElementSibling.innerHTML;
-
-        ativarModalDel(contentOfTask);
-    }
+    desativarModais();
+    renderizarListaDeTarefas();
 });
+
+// Deletar tarefa a partir do clique no botão de deletar do modal del
+
+const deleteTaskButton = document.querySelector(".delete-task");
+
+
+deleteTaskButton.addEventListener("click", () => {
+
+    const tasksCurrent = document.querySelectorAll(".task"); 
+
+    let tasksRemaining = [];
+
+    tasksCurrent.forEach((task) => {
+        const contentOfTask = task.children[1].innerHTML;
+        const taskCompleteStatus = task.getAttribute("id") != null ? true : false;
+
+        contentOfTask != tarefaASerApagada ? tasksRemaining.push([contentOfTask, taskCompleteStatus]):null;
+    });
+
+    actualTaskDay.tasks = tasksRemaining;
+
+    renderizarListaDeTarefas();
+
+    desativarModais();
+})
+
+
+// Fechamento de modais a partir do botão cancel
+
+const cancelButton = document.querySelectorAll(".cancel");
+
+cancelButton.forEach(bt => bt.addEventListener("click", desativarModais));
