@@ -2,7 +2,9 @@
     margin: 0;
     padding: 0;
 
-    font-family: 'Roboto Condensed';
+    box-sizing: border-box;
+
+    font-family: 'Roboto Condensed', arial;
 }
 
 header {
@@ -131,7 +133,7 @@ section .bt-trash img:hover {
     width: 100vw;
     height: 100vh;
 
-    position: absolute;
+    position: fixed;
     top:0;
 
     background-color: #000000aa;
@@ -206,3 +208,124 @@ section .bt-trash img:hover {
 
 
 
+
+
+.last-days {
+    width: 100vw;
+    height: 100vh;
+
+    background-color: #00000055;
+    position: fixed;
+    top:0;
+
+    display: flex;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.last-days .days {
+    width: 60%;
+    height: 90%;
+
+    background-color: #0000ff;
+
+    display:flex;
+
+    flex-wrap: wrap;
+
+    gap: 2%;
+    padding: 10px 0 10px 1%;
+
+    overflow-y: scroll;
+}
+
+
+
+
+
+.day {
+    width: 23%;
+
+    height: 200px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border:2px solid #000000;
+    border-radius: 5px;
+}
+
+.day-options {
+    width: 100%;
+
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.date-of-tasks {
+    font-size: 1.5rem;
+    
+    margin-bottom: 1.7rem;
+}
+
+.day-options button {
+    width: 50%;
+
+    padding: 5px 10px;
+
+    font-weight: bold;
+}
+
+
+
+
+
+.visualize-task-selected-area{
+    width: 100vw;
+    height: 100vh;
+
+    background-color: #00000055;
+
+    position: fixed;
+    top:0;
+
+    display: flex;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-selected-to-view {
+    background-color: #ffffff;
+
+    height: 90%;
+    width: 40%;
+
+    padding: 10px 5px;
+}
+
+.date-of-task-selected {
+    text-align: center;
+
+    font-size: 2rem;
+
+    margin-bottom: 2rem;
+}
+
+.task-of-day-view {
+    display: flex;
+
+    padding: 5px 25px;
+}
+
+.task-of-day-view-text {
+    flex: 1;
+    text-align: center;
+    font-size: 1.5rem;
+}
