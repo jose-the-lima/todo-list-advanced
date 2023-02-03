@@ -1,3 +1,16 @@
+// Essa vai ser inicialização do programa, ele já vai armazenar a chave "days" na variável localAllTasks quando o programa iniciar, e caso não tenha ele vai setar a chave pela primeira vez, e já vai adicionar logo e já vai atribuir logo em seguida para o localAllTasks o item que acabou de ser registrado.
+
+let localAllTasks = JSON.parse(localStorage.getItem("days"));
+
+if(localAllTasks === null) {
+    console.log(`O local-all-tasks está vazio ou seja ${localAllTasks}`);
+    
+    localStorage.setItem("days", JSON.stringify([]));
+    localAllTasks = JSON.parse(localStorage.getItem("days"));
+}
+
+console.log(`localAllTasks agora: ${localAllTasks}`);
+
 let tarefaASerApagada = "";
 
 // Área responsável por criar o dia, e criar o objeto com os dados do dia.
@@ -7,18 +20,39 @@ let actualTaskDay;
 const addDayButton = document.querySelector(".button-add");
 
 addDayButton.addEventListener("click", () => {
+
     dataAtual = new Date().toLocaleDateString("pt-br");
 
-    actualTaskDay = {
-        data: dataAtual,
-        tasks: []
-    };
+    let dataJaExiste = verificaSeEssaDataExiste(dataAtual);
 
-    const sectionTitleDate = document.querySelector(".main-content section h1");
-    sectionTitleDate.innerHTML = dataAtual;
+    if(!dataJaExiste) {
+        actualTaskDay = {
+            data: dataAtual,
+            tasks: []
+        };
+    
+        document.querySelector(".main-content section h1").innerHTML = dataAtual
+    
+        buttonAdd.removeAttribute("id");
 
-    buttonAdd.removeAttribute("id");
+    } else {
+        alert("Data já existe");
+    }
 });
+
+// Funções do localStorage
+function verificaSeEssaDataExiste(dataString) {
+    let datasExistentes = localAllTasks.map(date => {
+        return date.data;
+    });
+
+    console.log("Datas existentes ", datasExistentes);
+
+
+    return datasExistentes.some(data => data === dataString);
+}
+
+
 
 
 // Eventos na área de tarefas
