@@ -81,7 +81,9 @@ section button img {
 
     border: 1px solid #444444;
 
-    transition: all .5s ease;
+    transition: all 1s linear;
+
+    cursor:pointer;
 }
 
 
@@ -110,6 +112,8 @@ section .bt-trash {
 }
 
 section .bt-trash img {
+    width: 30px;
+
     cursor: pointer;
     background-color: lightcoral;
 

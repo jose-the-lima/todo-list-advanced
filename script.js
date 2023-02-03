@@ -1,3 +1,7 @@
+const buttonAdd = document.querySelector(".button-add-task");
+let dataAtual;
+let actualTaskDay;
+
 // Essa vai ser inicialização do programa, ele já vai armazenar a chave "days" na variável localAllTasks quando o programa iniciar, e caso não tenha ele vai setar a chave pela primeira vez, e já vai adicionar logo e já vai atribuir logo em seguida para o localAllTasks o item que acabou de ser registrado.
 
 let localAllTasks = JSON.parse(localStorage.getItem("days"));
@@ -11,11 +15,12 @@ if(localAllTasks === null) {
 
 console.log(`localAllTasks agora: ${localAllTasks}`);
 
+iniciarDiaSeEleJaExistir()
+
 let tarefaASerApagada = "";
 
 // Área responsável por criar o dia, e criar o objeto com os dados do dia.
-let dataAtual;
-let actualTaskDay;
+
 
 const addDayButton = document.querySelector(".button-add");
 
@@ -31,14 +36,21 @@ addDayButton.addEventListener("click", () => {
             tasks: []
         };
     
-        document.querySelector(".main-content section h1").innerHTML = dataAtual
-    
-        buttonAdd.removeAttribute("id");
+        ativaDia(dataAtual);
+
+        localAllTasks.push(actualTaskDay);
+
+        localStorage.setItem("days", JSON.stringify(localAllTasks));
 
     } else {
         alert("Data já existe");
     }
 });
+
+function ativaDia(data) {
+    document.querySelector(".main-content section h1").innerHTML = data;
+    buttonAdd.removeAttribute("id");
+}
 
 // Funções do localStorage
 function verificaSeEssaDataExiste(dataString) {
@@ -52,8 +64,30 @@ function verificaSeEssaDataExiste(dataString) {
     return datasExistentes.some(data => data === dataString);
 }
 
+function iniciarDiaSeEleJaExistir() {
+    const currentDate = new Date().toLocaleDateString("pt-br");
+    let lastDateRegistered;
+
+    if(localAllTasks.length > 0) {
+        lastDateRegistered = localAllTasks[localAllTasks.length - 1].data;
+    }
 
 
+    if(currentDate === lastDateRegistered) {
+        lastDateRegistered = localAllTasks[localAllTasks.length - 1];
+        ativaDia(currentDate);
+
+        actualTaskDay = lastDateRegistered;
+        renderizarListaDeTarefas();
+    }
+}
+
+
+function salvarNoLocalStorage() {
+    localAllTasks[localAllTasks.length - 1].tasks = actualTaskDay.tasks;
+
+    localStorage.setItem("days", JSON.stringify(localAllTasks));
+}
 
 // Eventos na área de tarefas
 const tasksArea = document.querySelector(".tasks");
@@ -65,8 +99,10 @@ tasksArea.addEventListener("click", (event) => {
         const pai = event.target.parentNode;
         if(pai.hasAttribute("id")) {
             pai.removeAttribute("id");
+            getAllTasksAndRefresh();
         } else {
             pai.setAttribute("id", "checked");
+            getAllTasksAndRefresh();
         }
     } else if(nameTag === "IMG") {
         const contentOfTask = event.target.parentNode.previousElementSibling.innerHTML;
@@ -134,7 +170,7 @@ function ativarModalDel(task) {
 
 // Adição de tarefa a partir de eventos que liga o modal:
 
-const buttonAdd = document.querySelector(".button-add-task");
+
 
 buttonAdd.addEventListener("click", () => {
     ativarModalAdd();
@@ -154,11 +190,27 @@ addTaskButton.addEventListener("click", () => {
 
     actualTaskDay.tasks = [...tasksModified, [task.value, false]];
 
+    salvarNoLocalStorage()
+
     task.value = "";
     
     desativarModais();
     renderizarListaDeTarefas();
 });
+
+function getAllTasksAndRefresh() {
+    const tasksModified = [];
+    let tasksOfMoment = document.querySelectorAll(".task");
+
+    tasksOfMoment.forEach((tas) => {
+        tasksModified.push([tas.children[1].innerHTML, tas.getAttribute("id") != null ? true:false]);
+    });
+
+    actualTaskDay.tasks = tasksModified;
+
+    salvarNoLocalStorage();
+    renderizarListaDeTarefas();
+}
 
 // Deletar tarefa a partir do clique no botão de deletar do modal del
 
@@ -179,6 +231,8 @@ deleteTaskButton.addEventListener("click", () => {
     });
 
     actualTaskDay.tasks = tasksRemaining;
+
+    salvarNoLocalStorage()
 
     renderizarListaDeTarefas();
 
