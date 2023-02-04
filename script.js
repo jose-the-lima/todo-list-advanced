@@ -7,13 +7,19 @@ let actualTaskDay;
 let localAllTasks = JSON.parse(localStorage.getItem("days"));
 
 if(localAllTasks === null) {
-    console.log(`O local-all-tasks está vazio ou seja ${localAllTasks}`);
-    
-    localStorage.setItem("days", JSON.stringify([]));
+    localStorage.setItem("days", JSON.stringify([{data: "21/01/2023", tasks: [["comer", true], ["feliz", true], ["se divertir", false]]}, 
+        {data: "22/01/2023", tasks: [["comer", true], ["feliz", true], ["se divertir", false]]}, 
+        {data: "23/01/2023", tasks: [["estudar java", false], ["lavar os pratos", true], ["look the sky", false]]}, 
+        {data: "24/01/2023", tasks: [["estudar javascript", true], ["draw a person", true], ["eat food", true]]}, 
+        {data: "25/01/2023", tasks: [["acordar", true], ["rir", true], ["chorar", true]]}, 
+        {data: "26/01/2023", tasks: [["look my phone", true], ["look my life", false], ["improve my way of be", false]]}
+    ]));
     localAllTasks = JSON.parse(localStorage.getItem("days"));
 }
 
-console.log(`localAllTasks agora: ${localAllTasks}`);
+// localAllTasks = 
+
+localStorage.setItem("days", JSON.stringify(localAllTasks))
 
 iniciarDiaSeEleJaExistir()
 
@@ -245,3 +251,88 @@ deleteTaskButton.addEventListener("click", () => {
 const cancelButton = document.querySelectorAll(".cancel");
 
 cancelButton.forEach(bt => bt.addEventListener("click", desativarModais));
+
+
+
+// Funções relacionadas aos modais de "ultimas tarefas" e "verificar a tarefa selecionada"
+
+const lastTasksArea = document.querySelector(".last-days");
+const buttonLastDays = document.querySelector(".button-last-days");
+const lastTasksBox = document.querySelector(".days");
+const sheetExclusiveForTaskSelected = document.querySelector(".visualize-task-selected-area");
+
+buttonLastDays.addEventListener("click", activeModalLastTasks);
+
+function activeModalLastTasks() {
+    document.querySelector(".last-days").removeAttribute("id");
+
+    rendersLastTasks();
+}
+
+function rendersLastTasks() {
+    localAllTasks.forEach(ele => {
+        const currentDate = new Date().toLocaleDateString("pt-br");
+        if(ele.data != currentDate) {
+            lastTasksBox.innerHTML += `<div class="day"  data-task-date="${ele.data}">
+            <div class="date-of-tasks">${ele.data}</div>
+                <div class="day-options">
+                    <button>Ver</button>
+                    <button>Apagar</button>
+                </div>
+            </div>`
+        }
+    });
+}
+
+lastTasksBox.addEventListener("click", function(e) {
+    let tagName = e.target.tagName;
+
+    if(tagName === "BUTTON") {
+        console.log("data selecionada foi " +e.target.parentNode.parentNode.getAttribute("data-task-date"));
+
+        let dateSelected = e.target.parentNode.parentNode.getAttribute("data-task-date");
+
+        let dateFound = localAllTasks.filter((day) => {
+            if(day.data === dateSelected) {
+                return true; 
+            } else {
+                return false;
+            }
+        });
+
+        console.log("Tasks encontradas sobre o dia "+ dateSelected, dateFound);
+
+        rendersLastTaskSelected(dateFound[0]);
+    }
+})
+
+function activeSheetOfTaskSelected() {
+    sheetExclusiveForTaskSelected.removeAttribute("id");
+}
+
+function turnOffSheetOfTaskSelected() {
+    sheetExclusiveForTaskSelected.setAttribute("id", "none");
+}
+
+function rendersLastTaskSelected(dataRecived) {
+    const sheetTitleArea = document.querySelector(".date-of-task-selected");
+    sheetTitleArea.innerHTML = "";
+    sheetTitleArea.innerHTML = dataRecived.data;
+
+    activeSheetOfTaskSelected();
+
+    const sheetAreaTasks = document.querySelector(".tasks-of-day");
+    sheetAreaTasks.innerHTML = "";
+
+    dataRecived.tasks.forEach(task => {
+        sheetAreaTasks.innerHTML += modelLastTaskSelected(task);
+    });
+
+}
+
+function modelLastTaskSelected(task) {
+    return `<div class="task-of-day-view" ${task[1]? 'id="checked""' : ""}>
+        <input type="checkbox" checked disabled  id="${task[1] ? "complete":"incomplete"}"/>
+        <div class="task-of-day-view-text">${task[0]}</div>
+    </div>`;
+}

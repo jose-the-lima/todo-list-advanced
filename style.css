@@ -223,7 +223,7 @@ section .bt-trash img:hover {
     top:0;
 
     display: flex;
-    display: none;
+    /* display: none; */
     justify-content: center;
     align-items: center;
 }
@@ -250,6 +250,8 @@ section .bt-trash img:hover {
 
 .day {
     width: 23%;
+
+    background-color: #ffffff;
 
     height: 200px;
 
@@ -300,7 +302,6 @@ section .bt-trash img:hover {
     top:0;
 
     display: flex;
-    display: none;
     justify-content: center;
     align-items: center;
 }
@@ -324,6 +325,11 @@ section .bt-trash img:hover {
 
 .task-of-day-view {
     display: flex;
+    align-items:center;
+
+    border: 1px solid #000000;
+
+    margin: 5px 0;
 
     padding: 5px 25px;
 }
@@ -332,4 +338,27 @@ section .bt-trash img:hover {
     flex: 1;
     text-align: center;
     font-size: 1.5rem;
+}
+
+
+#complete {
+    appearance: none;
+
+    width: 20px;
+    height: 20px;
+    border:1px solid #999999;
+    border-radius: 5px;
+
+    background-color: green;
+}
+
+#incomplete {
+    appearance: none;
+
+    width: 20px;
+    height: 20px;
+    border:1px solid #999999;
+    border-radius: 5px;
+
+    background-color: red;
 }
