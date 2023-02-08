@@ -7,17 +7,9 @@ let actualTaskDay;
 let localAllTasks = JSON.parse(localStorage.getItem("days"));
 
 if(localAllTasks === null) {
-    localStorage.setItem("days", JSON.stringify([{data: "21/01/2023", tasks: [["comer", true], ["feliz", true], ["se divertir", false]]}, 
-        {data: "22/01/2023", tasks: [["comer", true], ["feliz", true], ["se divertir", false]]}, 
-        {data: "23/01/2023", tasks: [["estudar java", false], ["lavar os pratos", true], ["look the sky", false]]}, 
-        {data: "24/01/2023", tasks: [["estudar javascript", true], ["draw a person", true], ["eat food", true]]}, 
-        {data: "25/01/2023", tasks: [["acordar", true], ["rir", true], ["chorar", true]]}, 
-        {data: "26/01/2023", tasks: [["look my phone", true], ["look my life", false], ["improve my way of be", false]]}
-    ]));
+    localStorage.setItem("days", "[]");
     localAllTasks = JSON.parse(localStorage.getItem("days"));
 }
-
-// localAllTasks = 
 
 localStorage.setItem("days", JSON.stringify(localAllTasks))
 
@@ -142,12 +134,12 @@ function taskModel(task) {
 }
 
 
-// Modais:
+// Modais básicos iniciais:
 const modalCentral = document.querySelector(".central");
 const modalAdd = document.querySelector(".add-task-modal");
 const modalDel = document.querySelector(".delete-task-modal");
 
-// Funções relacionadas ao modal:
+// Funções relacionadas aos modais básicos:
 
 function desativarModais() {
     const modais = [modalCentral, modalAdd, modalDel];
@@ -176,8 +168,6 @@ function ativarModalDel(task) {
 
 // Adição de tarefa a partir de eventos que liga o modal:
 
-
-
 buttonAdd.addEventListener("click", () => {
     ativarModalAdd();
 })
@@ -204,6 +194,7 @@ addTaskButton.addEventListener("click", () => {
     renderizarListaDeTarefas();
 });
 
+// Essa função vai ser utilizada para pegar todas as tarefas e atualizar elas sempre de acordo com o id que elas possuem ou não, na hora de ativar ou desativar o checked
 function getAllTasksAndRefresh() {
     const tasksModified = [];
     let tasksOfMoment = document.querySelectorAll(".task");
@@ -269,25 +260,33 @@ function activeModalLastTasks() {
     rendersLastTasks();
 }
 
+// Função que vai renderizar cada ultima tarefa no modal de ultimas tarefas
+
 function rendersLastTasks() {
+    lastTasksBox.innerHTML = "";
     localAllTasks.forEach(ele => {
         const currentDate = new Date().toLocaleDateString("pt-br");
         if(ele.data != currentDate) {
             lastTasksBox.innerHTML += `<div class="day"  data-task-date="${ele.data}">
             <div class="date-of-tasks">${ele.data}</div>
                 <div class="day-options">
-                    <button>Ver</button>
-                    <button>Apagar</button>
+                    <button class="see-task">Ver</button>
+                    <button class="delete-task">Apagar</button>
                 </div>
             </div>`
         }
     });
 }
 
+
+let dataASerDeletada;
+
+// Evento no modal das tarefas anteriores inteiras, funcionando de acordo com o clique do usuário ele vai identificar, se for um botão, e qual é a classe daquele botão, e fazer efeitos diferentes de acordo com a informação obtida
+
 lastTasksBox.addEventListener("click", function(e) {
     let tagName = e.target.tagName;
 
-    if(tagName === "BUTTON") {
+    if(tagName === "BUTTON" && e.target.getAttribute("class") === "see-task") {
         console.log("data selecionada foi " +e.target.parentNode.parentNode.getAttribute("data-task-date"));
 
         let dateSelected = e.target.parentNode.parentNode.getAttribute("data-task-date");
@@ -303,17 +302,66 @@ lastTasksBox.addEventListener("click", function(e) {
         console.log("Tasks encontradas sobre o dia "+ dateSelected, dateFound);
 
         rendersLastTaskSelected(dateFound[0]);
+    } else if (tagName === "BUTTON" && e.target.getAttribute("class") === "delete-task") {
+        const pai = e.target.parentNode.parentNode.children;
+        const dataSelecionada = pai[0].innerHTML;
+
+        dataASerDeletada = dataSelecionada;
+
+        confirmationDelete(dataSelecionada);
     }
 })
 
+// Função para ativar o modal de deleção de task no histórico selecionada.
+function activeModalConfirmationDeletePreviousTask(message) {
+    document.querySelector(".confirmation-area").removeAttribute("id");
+    document.querySelector(".delete-text-confirmation").innerHTML = message;
+}
+
+
+
+const buttonConfirmationCancel = document.querySelector(".cancel-confirmation-modal");
+const buttonConfirmationDelete = document.querySelector(".delete-task-confirmation");
+
+
+
+buttonConfirmationCancel.addEventListener("click", cancelModalConfirmationDeletePreviousTask);
+
+function confirmationDelete(data) {
+    activeModalConfirmationDeletePreviousTask("Você deseja realmente apagar o histórico do dia "+data+" ?");
+    
+}
+
+// Serve para fechar o modal de confirmação de deleção de determinada tarefa selecionada
+function cancelModalConfirmationDeletePreviousTask() {
+    document.querySelector(".confirmation-area").setAttribute("id", "none");
+    dataASerDeletada = "";
+}
+
+buttonConfirmationDelete.addEventListener("click", () => {
+    localAllTasks.forEach((task, index) => {
+        if(task.data === dataASerDeletada) {
+            localAllTasks.splice(index, 1);
+        }
+    });
+
+    localStorage.setItem("days", JSON.stringify(localAllTasks));
+
+    cancelModalConfirmationDeletePreviousTask()
+    rendersLastTasks();
+});
+
+// Funções para ativar e desativar a folha da tarefa do histórico escolhido
 function activeSheetOfTaskSelected() {
     sheetExclusiveForTaskSelected.removeAttribute("id");
 }
 
 function turnOffSheetOfTaskSelected() {
-    sheetExclusiveForTaskSelected.setAttribute("id", "none");
+    sheetExclusiveForTaskSelected.setAttribute("id", "none");  
 }
 
+
+// Essa função vai costumizar a folha de task escolhida pelo histórico, e de acordo com a data, ele vai exibir as tarefas daquele dia, pondo tanto a data, quanto se ela foi concluída ou não a partir de um modelo.
 function rendersLastTaskSelected(dataRecived) {
     const sheetTitleArea = document.querySelector(".date-of-task-selected");
     sheetTitleArea.innerHTML = "";
@@ -336,3 +384,16 @@ function modelLastTaskSelected(task) {
         <div class="task-of-day-view-text">${task[0]}</div>
     </div>`;
 }
+
+// Funções de fechamento de modais de ultimas tarefas e tarefa selecionada nas ultimas tarefas
+
+const closeTaskSelected = document.querySelector(".task-selected-close");
+closeTaskSelected.addEventListener("click", turnOffSheetOfTaskSelected);
+
+const lastDaysCloseButton = document.querySelector(".last-days-close");
+
+function closeLastDays() {
+    document.querySelector(".last-days").setAttribute("id", "none");
+}
+
+lastDaysCloseButton.addEventListener("click", closeLastDays);
