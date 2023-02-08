@@ -40,8 +40,6 @@ addDayButton.addEventListener("click", () => {
 
         localStorage.setItem("days", JSON.stringify(localAllTasks));
 
-    } else {
-        alert("Data já existe");
     }
 });
 
@@ -321,7 +319,7 @@ function activeModalConfirmationDeletePreviousTask(message) {
 
 
 const buttonConfirmationCancel = document.querySelector(".cancel-confirmation-modal");
-const buttonConfirmationDelete = document.querySelector(".delete-task-confirmation");
+const buttonConfirmationDelete = document.querySelector(".delete-task-confirmation-button");
 
 
 

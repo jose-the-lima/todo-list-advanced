@@ -23,6 +23,7 @@ header {
 
 .button-add {
     border-radius: 50%;
+    cursor:pointer;
 }
 .button-add img {
     width: 30px;
@@ -241,6 +242,8 @@ section .bt-trash img:hover {
     border-radius: 10px;
 
     cursor: pointer;
+
+    padding: 10px;
 }
 
 .last-days-close img {
@@ -355,12 +358,12 @@ section .bt-trash img:hover {
 }
 
 .task-selected-close {
-    background-color: #ff0000;
-    
     width: 30px;
     height: 30px;
 
     border-radius: 5px;
+
+    cursor: pointer;
 }
 
 .task-selected-close img {
@@ -425,4 +428,69 @@ section .bt-trash img:hover {
     border-radius: 5px;
 
     background-color: red;
+}
+
+
+/* Responsividade: */
+
+@media screen and (max-width: 1000px) {
+    .last-days .days {
+        width: 80%;
+        gap: 2%;
+    }
+
+    .day {
+        width: 48%; 
+    }
+
+    .confirmation-area, .central{
+        padding: 20px;
+    }
+
+    .tasks .task p{
+        padding:10px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .task-selected-to-view{
+        padding: 15px;
+
+        width: 65%;
+    }
+
+    .task-of-day-view{
+        gap: 10px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .task-selected-to-view{
+        width: 90%;
+    }
+
+    .last-days .days {
+        width:90%;
+        gap: 2%;
+
+        padding: 20px;
+    }
+
+    .day {
+        width: 100%; 
+    }
+
+    .main-content section{
+        flex-direction: column;
+        gap:15px;
+
+        padding:10px;
+    }
+
+    .tasks .task{
+        flex-direction: column;
+    }
+    .tasks p {
+        padding: 15px 0;
+    }
 }
