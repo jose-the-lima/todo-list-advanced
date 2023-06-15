@@ -27,4 +27,4 @@ mostrar como também mostrar os detalhes daquele dia, como as tarefas que foram 
 - Apagar as tarefas
 - Ter acesso a tarefas de dias anteriores
 - Ter acesso a cada uma das tarefas dos dias anteriores, todos os dados, tarefas individuais e se foram concluídas ou não
-- Apagar tarefas dos dias anteriores caso queira
+- Apagar o histórico de alguma tarefa dos dias anteriores caso queira
